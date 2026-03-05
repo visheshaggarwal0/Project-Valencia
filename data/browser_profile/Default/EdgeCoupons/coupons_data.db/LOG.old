@@ -1,0 +1,5 @@
+2026/02/25-23:23:39.989 6390 Creating DB C:\Users\aggar\Documents\Viora\data\browser_profile\Default\EdgeCoupons/coupons_data.db since it was missing.
+2026/02/25-23:23:40.029 6390 Reusing MANIFEST C:\Users\aggar\Documents\Viora\data\browser_profile\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
+2026/02/25-23:23:40.605 5c9c Level-0 table #5: started
+2026/02/25-23:23:40.613 5c9c Level-0 table #5: 681581 bytes OK
+2026/02/25-23:23:40.617 5c9c Delete type=0 #3

@@ -1,0 +1,36 @@
+Agent reasoning → llama3.1:8b-q4
+Router → rules or phi3-mini
+RAG → llama3.1
+Vision → llava
+
+Your Final Architecture (Clean Version)
+             User
+              │
+              ▼
+         Intent Router
+              │
+     ┌────┴──────┐
+     ▼                                ▼
+Agent Brain        RAG Brain
+(planner)            (retrieval)
+     │                           │
+     ▼                           ▼
+Executor           Retriever
+     │                           │
+     ▼                           ▼
+Tools             Llama Answer
+
+
+#Core flow:
+User
+ ↓
+Fast Chat Brain (Gemma-3-1B)
+ ↓
+Action Proposal
+ ↓
+User Confirmation
+ ↓
+Tool Execution
+ ↓
+Result Response
+

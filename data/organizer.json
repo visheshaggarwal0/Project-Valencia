@@ -14,6 +14,21 @@
             "task": "Verification task",
             "completed": false,
             "created_at": "2026-02-17T20:45:33.665258"
+        },
+        {
+            "task": "Buy groceries",
+            "completed": false,
+            "created_at": "2026-02-25T19:57:19.113414"
+        },
+        {
+            "task": "Finish project",
+            "completed": false,
+            "created_at": "2026-02-25T19:57:19.115540"
+        },
+        {
+            "task": "Call mom",
+            "completed": false,
+            "created_at": "2026-02-25T19:57:24.706224"
         }
     ],
     "journal": []

@@ -1,0 +1,6 @@
+2026/02/25-23:52:42.319 6aac Reusing MANIFEST C:\Users\aggar\Documents\Viora\data\browser_profile\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
+2026/02/25-23:52:42.320 6aac Recovering log #4
+2026/02/25-23:52:42.321 6aac Reusing old log C:\Users\aggar\Documents\Viora\data\browser_profile\Default\EdgeCoupons/coupons_data.db/000004.log 
+2026/02/25-23:52:42.595 49c0 Level-0 table #8: started
+2026/02/25-23:52:42.601 49c0 Level-0 table #8: 681684 bytes OK
+2026/02/25-23:52:42.606 49c0 Delete type=0 #4
