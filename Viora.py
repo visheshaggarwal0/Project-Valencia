@@ -29,9 +29,10 @@ memory = Memory()
 all_tools = get_viora_tools("ALL")
 tools_map = {tool.name: tool for tool in all_tools}
 
-def run_agent_loop(user_input: str):
+def run_agent_loop(user_input: str, status=None):
     """Handles the execution of Viora's brain."""
-    return brain.run(user_input)
+    context = memory.get_relevant_context(user_input)
+    return brain.run(user_input, status=status, context=context)
 
 @app.command()
 def chat(query: Optional[str] = typer.Argument(None, help="Optional query to run and exit immediately.")):
@@ -57,8 +58,8 @@ def chat(query: Optional[str] = typer.Argument(None, help="Optional query to run
                 brain.should_exit = True
                 break
             
-            with console.status("[bold cyan]Viora is thinking...[/bold cyan]", spinner="dots"):
-                final_response = run_agent_loop(user_input)
+            with console.status("[bold cyan]Viora is thinking...[/bold cyan]", spinner="dots") as status:
+                final_response = run_agent_loop(user_input, status=status)
             
             memory.log_interaction(user_input, final_response)
             

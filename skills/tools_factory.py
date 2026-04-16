@@ -1,13 +1,21 @@
 from langchain_core.tools import StructuredTool
+from pydantic import BaseModel, Field
 from skills.todo_skills import TodoSkills
 from skills.windows_skills import WindowsSkills
-from skills.browser_skills import BrowserSkills
+from skills.selenium_skills import SeleniumSkills
 from skills.general_skills import GeneralSkills
+
+class WebSearchInput(BaseModel):
+    query: str = Field(description="The exact search query text")
+
+class BrowserTypeInput(BaseModel):
+    selector: str = Field(description="The CSS element selector")
+    text: str = Field(description="The text to type")
 
 def get_viora_tools(category: str = "ALL"):
     org = TodoSkills()
     win = WindowsSkills()
-    browser = BrowserSkills()
+    browser = SeleniumSkills()
     gen = GeneralSkills()
 
     # Define tool groups
@@ -36,11 +44,11 @@ def get_viora_tools(category: str = "ALL"):
     ]
 
     browser_tools = [
-        StructuredTool.from_function(name="web_search", func=browser.web_search, description="Search the web for up-to-date facts and info."),
+        StructuredTool.from_function(name="web_search", func=browser.web_search, description="Search the web for up-to-date facts and info.", args_schema=WebSearchInput),
         StructuredTool.from_function(name="google_nav", func=browser.google_search_nav, description="Search Google and open the results in a browser tab."),
         StructuredTool.from_function(name="browser_open", func=browser.browser_open, description="Navigate to a URL."),
         StructuredTool.from_function(name="browser_click", func=browser.browser_click, description="Click an element on the webpage."),
-        StructuredTool.from_function(name="browser_type", func=browser.browser_type, description="Type text into a webpage element."),
+        StructuredTool.from_function(name="browser_type", func=browser.browser_type, description="Type text into a webpage element.", args_schema=BrowserTypeInput),
         StructuredTool.from_function(name="browser_get_text", func=browser.browser_get_text, description="Get text content of a specific element."),
         StructuredTool.from_function(name="browser_get_all_text", func=browser.browser_get_all_text, description="Get the text of the entire webpage.")
     ]

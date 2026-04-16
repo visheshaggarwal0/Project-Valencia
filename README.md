@@ -1,43 +1,36 @@
-# Viora 🤖
+# Viora 🤖✨
 
-**Viora** is an advanced AI-powered automation assistant for Windows that combines natural language understanding with comprehensive browser and desktop control capabilities. Built with LangChain and powered by LLMs (Groq/Google), Viora can automate complex workflows, control applications, and assist with daily tasks.
+**Viora** is a next-generation, autonomous AI agent for your Windows Desktop. Engineered with a **ReAct (Plan-and-Execute)** orchestration loop, Viora doesn't just respond to chats—it independently creates execution strategies to drive your desktop, automate browsers, and solve complex workflows utilizing advanced LLM reasoning (via Groq, Ollama, or Gemini).
 
-## ✨ Features
+![Viora Banner](https://img.shields.io/badge/Status-Active-brightgreen) ![Python Version](https://img.shields.io/badge/Python-3.9%2B-blue) ![License](https://img.shields.io/badge/License-MIT-purple)
 
-### 🌐 Browser Automation (26 Tools)
-- **Navigation & Control**: Navigate URLs, manage tabs, browser history
-- **Form Handling**: Submit forms, select dropdowns, check checkboxes, upload files
-- **Page Interaction**: Click, type, scroll, hover, right-click elements
-- **Data Extraction**: Extract links, tables, text, count elements
-- **Screenshots**: Capture full pages or specific elements
+---
 
-### 🖥️ Desktop Automation (21 Tools)
-- **Window Management**: List, focus, minimize, maximize, close, resize, move windows
-- **Mouse Control**: Move, click, double-click, drag-and-drop, scroll, right-click
-- **Keyboard Control**: Press keys, hotkeys, type text
-- **Screen Capture**: Screenshots, region capture, pixel color detection
+## 🌟 Key Upgrades & Features
 
-### 🛠️ System Tools (17 Tools)
-- **File Operations**: Read, write, list files
-- **System Info**: CPU, RAM, battery status, OS info
-- **Audio Control**: Volume control, mute/unmute
-- **Media Control**: Play/pause, next/previous track
-- **Clipboard**: Read/write clipboard content
-- **App Launching**: Open applications with smart aliases
-- **Web Tools**: Read and summarize web pages
-- **Search**: DuckDuckGo web search
+### 🧠 ReAct Engine & Ephemeral CLI
+- **Autonomous Reasoning System**: Viora synthesizes instructions, creates a multi-step action plan, and dynamically invokes specific tools (over 60+ available) until the task is structurally complete.
+- **"Ghost" Spinner UI**: Terminal logs and thought-processes are injected directly into a breathtaking, rich CLI loading spinner that evaporates the exact millisecond the task concludes, maintaining a pristine terminal layout without token pollution.
 
-### 📝 Productivity Tools
-- **Todo Management**: Add, list, complete tasks
-- **Memory**: Store and retrieve notes
-- **Journal**: Track daily activities
+### 🗄️ ChromaDB RAG Architecture
+- **Vector Memory Core**: Viora has true long-term memory! Using `all-MiniLM-L6-v2` embeddings via **ChromaDB**, every interaction is parsed into semantic vectors.
+- **Dynamic Context Injection**: When you ask a question, Viora natively queries the Top 4 most relevant past conversational chunks and organically injects them into its awareness stream, enabling deep personalization while minimizing token cost.
+
+### 🌐 Selenium Web Automation
+- **Unrestricted Access**: Playwright was globally swapped for **Selenium** to enable robust Edge wrapper manipulation, persistent cookie profile injection, and native bypasses for automated browser restrictions. Log into WhatsApp Web once, and Viora remembers you in its persistent profile storage forever. 
+
+### 🖥️ Native Desktop Operations
+- **System Hacking**: Native integration with `PyAutoGUI`, `pywinauto`, and `pygetwindow`.
+- Instruct Viora to open `notepad.exe`, type a specific greeting, adjust your volume, capture targeted screenshots, compute screen pixels, or read/write to your local clipboard.
+
+---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Python 3.8+
+- Python 3.9+
 - Windows OS
-- API keys for Groq or Google AI
+- API keys for **Groq** (Recommended for Llama-3.3 70b inference speed)
 
 ### Installation
 
@@ -47,137 +40,56 @@ git clone https://github.com/yourusername/viora.git
 cd viora
 ```
 
-2. **Install dependencies**
+2. **Initialize Environment**
 ```bash
+python -m venv .venv
+.venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-3. **Install Playwright browsers**
-```bash
-playwright install chromium
-```
-
-4. **Set up environment variables**
+3. **Set up environment variables**
 Create a `.env` file in the project root:
 ```env
-VIORA_MODEL_PROVIDER=groq  # or "google"
+VIORA_MODEL_PROVIDER=groq
 GROQ_API_KEY=your_groq_api_key_here
-GOOGLE_API_KEY=your_google_api_key_here  # if using Google
+GOOGLE_API_KEY=your_google_api_key_here  # Optional fallback
 ```
 
-5. **Run Viora**
+4. **Launch the Agent**
+Viora utilizes the elegant `typer` framework. Boot into the rich CLI interface:
 ```bash
-python main.py chat
+python viora.py chat
 ```
 
 ## 💡 Usage Examples
 
-### Browser Automation
-```
-"Navigate to google.com and search for Python tutorials"
-"Open example.com, extract all links, and take a screenshot"
-"Fill out the form on this page with my information"
-"Open 3 tabs with different URLs and list them"
-```
+Drop directly into your terminal and start giving commands naturally:
 
-### Desktop Automation
-```
-"List all open windows"
-"Focus the Chrome window and maximize it"
-"Move mouse to (500, 300) and click"
-"Drag from (100, 100) to (500, 500)"
-"Type 'Hello World' and press Enter"
-```
+- **Desktop Action**: *"Open notepad, type out a quick goodbye message to Mom, save it, and then take a screenshot of my screen."*
+- **Web Auto**: *"Open browser, research the current Indian President, and give me a brief summary."*
+- **System Hook**: *"Mute my system volume, then read me my clipboard contents."*
+- **Semantic Memory**: *"Do you remember what my favorite coffee shop is from last week?"*
 
-### System Control
-```
-"Set volume to 50%"
-"What's my system status?"
-"Open Calculator"
-"Take a screenshot"
-"Read the content of example.txt"
-```
-
-### Productivity
-```
-"Add 'Buy groceries' to my todo list"
-"What are my todos?"
-"Remember that the meeting is at 3 PM"
-```
-
-## 📁 Project Structure
+## 📁 System Architecture
 
 ```
 viora/
 ├── agent/
-│   ├── brain.py          # Core LLM agent logic
-│   └── memory.py         # Memory management
+│   ├── brain.py          # Core ReAct & Router Agent Loop
+│   └── memory.py         # ChromaDB Vector RAG Engine
 ├── skills/
-│   ├── browser_tools.py  # Browser automation (Playwright)
-│   ├── desktop_tools.py  # Desktop automation (pywinauto/PyAutoGUI)
-│   ├── system_tools.py   # System utilities
-│   ├── web_tools.py      # Web scraping
-│   ├── web_search.py     # DuckDuckGo search
-│   ├── organizer.py      # Todo/journal management
-│   └── tools_factory.py  # Tool registration
+│   ├── selenium_skills.py# Selenium Web Driver wrapper (Stealth)
+│   ├── windows_skills.py # OS, Window handling, Sound, Apps
+│   ├── todo_skills.py    # Organic Task tracking
+│   └── tools_factory.py  # Pydantic Schema & Tool execution map
 ├── data/
-│   ├── memory.json       # Persistent memory storage
-│   └── organizer.json    # Todo/journal storage
-├── main.py               # Entry point
+│   ├── chroma_db/        # [Generated] Local Vector Embeddings
+│   └── browser_profile_selenium/ # [Generated] Persistent Cookies
+├── viora.py              # Typer CLI Entrypoint
 ├── requirements.txt      # Dependencies
-└── .env                  # Environment variables (create this)
+└── .env                  # Core Configuration Keys
 ```
-
-## 🔧 Configuration
-
-### Model Providers
-
-**Groq (Default)**
-- Fast inference with Llama models
-- Free tier available
-- Get API key: https://console.groq.com
-
-**Google AI**
-- Gemini models
-- Get API key: https://makersuite.google.com/app/apikey
-
-Set your provider in `.env`:
-```env
-VIORA_MODEL_PROVIDER=groq  # or "google"
-```
-
-## 🛡️ Safety Features
-
-- **PyAutoGUI Failsafe**: Move mouse to top-left corner to abort automation
-- **Error Recovery**: Robust error handling prevents crashes
-- **Browser Isolation**: Each browser session is sandboxed
-
-## 📊 Tool Count
-
-**Total: 64 Tools**
-- Browser Automation: 26 tools
-- Desktop Automation: 21 tools
-- System & Utilities: 17 tools
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📝 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 🙏 Acknowledgments
-
-- Built with [LangChain](https://github.com/langchain-ai/langchain)
-- Browser automation powered by [Playwright](https://playwright.dev/)
-- Desktop automation using [pywinauto](https://github.com/pywinauto/pywinauto) and [PyAutoGUI](https://github.com/asweigart/pyautogui)
-- LLM providers: [Groq](https://groq.com/) and [Google AI](https://ai.google.dev/)
-
-## ⚠️ Disclaimer
-
-Viora is a powerful automation tool. Use responsibly and ensure you have proper permissions before automating tasks on websites or systems you don't own.
 
 ---
 
-**Made with ❤️ for automation enthusiasts**
+**Made with ❤️ for the pursuit of true artificial desktop automation.**
