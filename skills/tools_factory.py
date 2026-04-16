@@ -47,10 +47,11 @@ def get_viora_tools(category: str = "ALL"):
         StructuredTool.from_function(name="web_search", func=browser.web_search, description="Search the web for up-to-date facts and info.", args_schema=WebSearchInput),
         StructuredTool.from_function(name="google_nav", func=browser.google_search_nav, description="Search Google and open the results in a browser tab."),
         StructuredTool.from_function(name="browser_open", func=browser.browser_open, description="Navigate to a URL."),
-        StructuredTool.from_function(name="browser_click", func=browser.browser_click, description="Click an element on the webpage."),
-        StructuredTool.from_function(name="browser_type", func=browser.browser_type, description="Type text into a webpage element.", args_schema=BrowserTypeInput),
+        StructuredTool.from_function(name="browser_click", func=browser.browser_click, description="Click an element on the webpage. Use browser_map_elements first to find the selector."),
+        StructuredTool.from_function(name="browser_type", func=browser.browser_type, description="Type text into a webpage element. Use browser_map_elements first to find the selector.", args_schema=BrowserTypeInput),
         StructuredTool.from_function(name="browser_get_text", func=browser.browser_get_text, description="Get text content of a specific element."),
-        StructuredTool.from_function(name="browser_get_all_text", func=browser.browser_get_all_text, description="Get the text of the entire webpage.")
+        StructuredTool.from_function(name="browser_get_all_text", func=browser.browser_get_all_text, description="Get the text of the entire webpage."),
+        StructuredTool.from_function(name="browser_map_elements", func=browser.browser_map_elements, description="Maps page elements and visually assigns them a [viora-id=*] attribute allowing you to extract targetable CSS IDs for clicking/typing on heavily scrambled webpages. Always use this if normal selectors fail.")
     ]
 
     general_tools = [

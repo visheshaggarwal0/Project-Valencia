@@ -114,6 +114,50 @@ class SeleniumSkills:
         except Exception as e:
             return f"Error grabbing text: {e}"
 
+    def browser_map_elements(self):
+        """Extract all interactable elements on the current page and assign them a unique 'viora-id' attribute for easy clicking/typing. RUN THIS FIRST to understand the layout before clicking."""
+        self._ensure_browser()
+        script = """
+        let interactables = document.querySelectorAll('a, button, input, textarea, select, [role="button"], [tabindex]:not([tabindex="-1"])');
+        let result = [];
+        let idCounter = 0;
+        interactables.forEach(el => {
+            let rect = el.getBoundingClientRect();
+            if (rect.width > 0 && rect.height > 0 && window.getComputedStyle(el).visibility !== 'hidden') {
+                el.setAttribute('viora-id', idCounter);
+                
+                let text = el.innerText || el.value || el.getAttribute('aria-label') || el.placeholder || el.getAttribute('title') || '';
+                text = text.trim().substring(0, 50);
+                
+                if (text || el.tagName.toLowerCase() === 'input' || el.tagName.toLowerCase() === 'textarea') {
+                    result.push({
+                        "viora-id": idCounter,
+                        "tag": el.tagName.toLowerCase(),
+                        "text": text,
+                        "type": el.type || undefined
+                    });
+                }
+                idCounter++;
+            }
+        });
+        return result;
+        """
+        try:
+            elements = self.driver.execute_script(script)
+            if not elements:
+                return "No interactable elements found."
+            
+            output = "Interactive Elements Map:\n"
+            for el in elements:
+                output += f"[{el['viora-id']}] <{el['tag']}> {el['text']}"
+                if el.get('type'):
+                    output += f" (type={el['type']})"
+                output += "\n"
+            output += "\nYou can now use `[viora-id=\"<id>\"]` as the CSS selector in the browser_click or browser_type tools."
+            return output
+        except Exception as e:
+            return f"Error mapping elements: {e}"
+
     def web_search(self, query: str):
         """Search the web for information using DuckDuckGo."""
         search = DuckDuckGoSearchRun()

@@ -67,7 +67,7 @@ def chat(query: Optional[str] = typer.Argument(None, help="Optional query to run
                 console.print(f"[bold blue]Viora:[/bold blue] {final_response}")
             
             # Display token usage if using Groq
-            if brain.provider == "groq":
+            if "groq" in brain.reasoning_provider:
                 usage = brain.get_token_usage()
                 last = usage.get('last')
                 session = usage.get('session')
@@ -85,6 +85,8 @@ def chat(query: Optional[str] = typer.Argument(None, help="Optional query to run
 
     if brain.should_exit:
         console.print("[bold italic green]Viora is offline. Goodbye![/bold italic green]")
+        import os
+        os._exit(0)
 
 @app.command()
 def todo(task: str):
