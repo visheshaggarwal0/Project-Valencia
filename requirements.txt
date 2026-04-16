@@ -24,3 +24,4 @@ pywinauto
 pyautogui
 opencv-python
 ollama
+langchain-ollama
