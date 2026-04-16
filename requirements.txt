@@ -22,6 +22,7 @@ playwright
 playwright-stealth
 pywinauto
 pyautogui
+pygetwindow
 opencv-python
 ollama
 langchain-ollama

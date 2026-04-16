@@ -116,7 +116,7 @@ class BrowserSkills:
 
     def web_search(self, query: str):
         """Search the web for information using DuckDuckGo."""
-        search = DuckDuckGoSearchRun(searcher_kwargs={"impersonate": "random"})
+        search = DuckDuckGoSearchRun()
         return search.run(query)
 
     def google_search_nav(self, query: str):

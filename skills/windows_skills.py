@@ -8,6 +8,7 @@ import pyperclip
 import pyautogui
 import pywinauto
 from pywinauto import Application, Desktop
+import pygetwindow
 from PIL import ImageGrab
 from ctypes import cast, POINTER
 from comtypes import CLSCTX_ALL
@@ -107,11 +108,20 @@ class WindowsSkills:
         """List files in a directory."""
         return "\n".join(os.listdir(path))
 
-    def take_screenshot(self, path: str = None):
+    def take_screenshot(self, path: str = ""):
         """Capture a full-screen screenshot."""
+        screenshots_dir = "screenshots"
+        os.makedirs(screenshots_dir, exist_ok=True)
+        
         if not path:
-            os.makedirs("screenshots", exist_ok=True)
-            path = os.path.join("screenshots", f"cap_{int(time.time())}.png")
+            path = os.path.join(screenshots_dir, f"screenshot_{datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.png")
+        elif not os.path.dirname(path):
+            # If only a filename was provided, put it in the screenshots folder
+            path = os.path.join(screenshots_dir, path)
+        else:
+            # if a full path was provided, ensure the parent directory exists
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            
         pyautogui.screenshot(path)
         return f"Screenshot saved to {path}"
 
