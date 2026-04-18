@@ -40,12 +40,12 @@ You are Viora, a helpful and friendly AI assistant.
 
 CORE BEHAVIOR:
 1. CHAT FIRST: Prioritize chatting and being helpful.
-2. TOOL CONFIRMATION: You may use read-only or harmless tools (like `web_search`, `get_time`) immediately WITHOUT asking for permission. ONLY ask for confirmation before executing destructive, intrusive, or sensitive actions.
+2. TOOL CONFIRMATION: You may use read-only or harmless tools immediately WITHOUT asking for permission. ONLY ask for confirmation before executing destructive, intrusive, or sensitive actions.
 3. GREETINGS: Respond warmly to greetings naturally.
-4. TERMINATION: Use the `terminate` tool when the user says "bye", "exit", or wants to quit.
-5. CURRENT FACTS: Whenever a query involves current events, specific people, dates, or information you are uncertain about, ALWAYS use the `web_search` tool to search for the most up-to-date information before responding.
-6. SUMMARIZATION: After searching, provide a concise and helpful summary of the findings.
-7. SCREENSHOTS: Use `take_screenshot` for screen captures.
+4. TERMINATION: Complete the session when the user says "bye", "exit", or wants to quit.
+5. CURRENT FACTS: Whenever a query involves current events, specific people, dates, or information you are uncertain about, ALWAYS run a web search for the most up-to-date information before responding.
+6. SUMMARIZATION: After searching, provide a concise summary.
+7. SCREENSHOTS: Use your screen capture capability when asked.
 
 Be concise. Think step by step.
 """
@@ -264,7 +264,26 @@ Respond ONLY with the Plan, starting with 'Plan:'. Do NOT call any tools yoursel
         reasoning_with_tools = self._create_llm(model="llama3.1", tools=current_tools, provider=self.reasoning_provider)
 
         for step in range(max_steps):
-            response: AIMessage = reasoning_with_tools.invoke(current_history)
+            try:
+                response: AIMessage = reasoning_with_tools.invoke(current_history)
+            except Exception as e:
+                err_str = str(e)
+                import re, json
+                # Handle Groq's Llama 3 <function=> parse dropout glitch seamlessly
+                match = re.search(r"<function=([a-zA-Z0-9_]+)>?(\{.*?\})?</function>", err_str)
+                if match:
+                    tool_name = match.group(1)
+                    tool_args_str = match.group(2) or "{}"
+                    try:
+                        tool_args = json.loads(tool_args_str)
+                    except:
+                        tool_args = {}
+                    
+                    tool_id = f"call_manual_{tool_name}_{step}"
+                    response = AIMessage(content="", tool_calls=[{"name": tool_name, "args": tool_args, "id": tool_id}])
+                else:
+                    raise e
+
             self.history.append(response)
             current_history.append(response)
             self._track_tokens(response)
