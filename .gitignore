@@ -17,9 +17,6 @@ env/
 .idea/
 
 # Viora specific data
-data/chroma_db/
-data/memory.json
-data/browser_profile_playwright/
-data/browser_profile_selenium/
+data/
 screenshots/
 *.log

@@ -221,12 +221,16 @@ class WindowsSkills:
         return "Clicked."
 
     def keyboard_type(self, text: str):
-        """Type text."""
-        pyautogui.write(text, interval=0.01)
-        return f"Typed text."
+        """Type text simulating a real human typing. This natively bypasses copy/paste blockers on websites!"""
+        # Sleep briefly to ensure the target window has fully loaded and claimed focus
+        time.sleep(1.5)
+        # Type with a slower interval to bypass strict JavaScript anti-bot listeners
+        pyautogui.write(text, interval=0.05)
+        return f"Auto-typed: {text}"
 
     def keyboard_press(self, key: str):
         """Press a key."""
+        time.sleep(1.0)
         pyautogui.press(key)
         return f"Pressed {key}"
 

@@ -32,7 +32,7 @@ tools_map = {tool.name: tool for tool in all_tools}
 def run_agent_loop(user_input: str, status=None):
     """Handles the execution of Viora's brain."""
     context = memory.get_relevant_context(user_input)
-    return brain.run(user_input, status=status, context=context)
+    return brain.run(user_input, status=status, context=context, memory=memory)
 
 @app.command()
 def chat(query: Optional[str] = typer.Argument(None, help="Optional query to run and exit immediately.")):
@@ -40,8 +40,8 @@ def chat(query: Optional[str] = typer.Argument(None, help="Optional query to run
     if query:
         try:
             final_response = run_agent_loop(query)
-            memory.log_interaction(query, final_response)
             console.print(f"[bold blue]Viora:[/bold blue] {final_response}")
+            memory.log_interaction(query, final_response)
             return
         except Exception as e:
             console.print(f"[bold red]An error occurred:[/bold red] {str(e)}")
@@ -61,10 +61,10 @@ def chat(query: Optional[str] = typer.Argument(None, help="Optional query to run
             with console.status("[bold cyan]Viora is thinking...[/bold cyan]", spinner="dots") as status:
                 final_response = run_agent_loop(user_input, status=status)
             
-            memory.log_interaction(user_input, final_response)
-            
             if final_response != "DONE":
                 console.print(f"[bold blue]Viora:[/bold blue] {final_response}")
+                
+            memory.log_interaction(user_input, final_response)
             
             # Display token usage if using Groq
             if "groq" in brain.reasoning_provider:
